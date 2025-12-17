@@ -1,0 +1,821 @@
+/* ==========================================
+   Dashboard Styles
+   ========================================== */
+
+.dashboard-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+/* ========================================== 
+   Welcome Section
+   ========================================== */
+
+.welcome-section {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-2xl);
+    color: white;
+    margin-bottom: var(--spacing-xl);
+    box-shadow: var(--shadow-lg);
+}
+
+.welcome-content h1 {
+    color: white;
+    font-size: 2rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.welcome-content p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.125rem;
+}
+
+.quick-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-xl);
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    transition: transform var(--transition-base);
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+}
+
+.stat-icon {
+    font-size: 2rem;
+}
+
+.stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: white;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* ========================================== 
+   Dashboard Grid
+   ========================================== */
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: var(--spacing-xl);
+}
+
+.left-column,
+.right-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+}
+
+/* ========================================== 
+   Streak Card
+   ========================================== */
+
+.streak-card {
+    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+    color: white;
+}
+
+.streak-card .card-header h3 {
+    color: white;
+}
+
+.streak-content {
+    text-align: center;
+}
+
+.streak-display {
+    margin: var(--spacing-xl) 0;
+}
+
+.streak-number {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.streak-label {
+    font-size: 1.125rem;
+    opacity: 0.9;
+}
+
+.streak-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-md);
+}
+
+.status-icon {
+    font-size: 1.25rem;
+}
+
+.status-text {
+    font-size: 0.875rem;
+}
+
+/* ========================================== 
+   Level Card
+   ========================================== */
+
+.level-content {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xl);
+}
+
+.level-badge {
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.badge-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--spacing-sm);
+    box-shadow: var(--shadow-lg);
+}
+
+.badge-circle span {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+}
+
+.badge-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.xp-progress {
+    flex: 1;
+}
+
+.xp-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-sm);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.xp-next {
+    margin-top: var(--spacing-sm);
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+/* ========================================== 
+   MCQ Card
+   ========================================== */
+
+.mcq-content {
+    text-align: center;
+}
+
+.mcq-info {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: var(--spacing-xl);
+}
+
+.mcq-count {
+    text-align: center;
+}
+
+.count-number {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: 1;
+}
+
+.count-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.mcq-reward {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.reward-icon {
+    font-size: 2rem;
+}
+
+.reward-text {
+    font-weight: 600;
+    color: var(--success-color);
+}
+
+/* ========================================== 
+   Achievements Card
+   ========================================== */
+
+.view-all {
+    font-size: 0.875rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.view-all:hover {
+    text-decoration: underline;
+}
+
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+}
+
+.achievement-badge {
+    aspect-ratio: 1;
+    border-radius: var(--radius-lg);
+    background: var(--surface-hover);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    padding: var(--spacing-md);
+    text-align: center;
+}
+
+.achievement-badge:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-md);
+}
+
+.achievement-badge.unlocked {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.achievement-badge.locked {
+    opacity: 0.4;
+}
+
+.achievement-icon {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.achievement-name {
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* ========================================== 
+   Quick Start Card
+   ========================================== */
+
+.quick-start-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.quick-btn {
+    width: 100%;
+    padding: var(--spacing-lg);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface-hover);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    transition: all var(--transition-base);
+}
+
+.quick-btn:hover {
+    border-color: var(--primary-color);
+    background: var(--surface);
+    transform: translateX(5px);
+}
+
+.btn-icon {
+    font-size: 1.5rem;
+}
+
+.btn-content {
+    text-align: left;
+}
+
+.btn-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.btn-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.subject-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+}
+
+.subject-btn {
+    padding: var(--spacing-md);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    transition: all var(--transition-base);
+    font-weight: 600;
+}
+
+.subject-icon {
+    font-size: 1.5rem;
+}
+
+.biology-btn:hover {
+    border-color: var(--biology-color);
+    background: rgba(5, 150, 105, 0.1);
+    transform: translateY(-3px);
+}
+
+.chemistry-btn:hover {
+    border-color: var(--chemistry-color);
+    background: rgba(124, 58, 237, 0.1);
+    transform: translateY(-3px);
+}
+
+.physics-btn:hover {
+    border-color: var(--physics-color);
+    background: rgba(220, 38, 38, 0.1);
+    transform: translateY(-3px);
+}
+
+/* ========================================== 
+   Activity Feed
+   ========================================== */
+
+.activity-feed {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.activity-item {
+    display: flex;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    background: var(--surface-hover);
+    transition: background var(--transition-base);
+}
+
+.activity-item:hover {
+    background: var(--border);
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    background: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.activity-info {
+    flex: 1;
+}
+
+.activity-description {
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-bottom: var(--spacing-xs);
+}
+
+.activity-time {
+    font-size: 0.75rem;
+    color: var(--text-light);
+}
+
+/* ========================================== 
+   Recommendations
+   ========================================== */
+
+.recommendations-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.recommendation-item {
+    padding: var(--spacing-lg);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-base);
+    cursor: pointer;
+}
+
+.recommendation-item:hover {
+    border-color: var(--primary-color);
+    background: var(--surface-hover);
+    transform: translateX(5px);
+}
+
+.recommendation-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.recommendation-description {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+/* ========================================== 
+   Modal Base Styles
+   ========================================== */
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: white;
+    border-radius: var(--radius-xl);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: modalSlideIn 0.3s ease-out;
+    position: relative;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    padding: var(--spacing-2xl);
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 80px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.75rem;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.modal-body {
+    padding: var(--spacing-xl);
+}
+
+/* ========================================== 
+   MCQ Modal
+   ========================================== */
+
+.mcq-modal-content {
+    max-width: 900px;
+    min-height: 600px;
+}
+
+.quiz-progress {
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+.mcq-body {
+    padding: var(--spacing-2xl);
+    min-height: 450px;
+}
+
+.question-card {
+    margin-bottom: var(--spacing-2xl);
+}
+
+.question-text {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-2xl);
+    line-height: 1.8;
+    font-weight: 500;
+}
+
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.option-btn {
+    width: 100%;
+    padding: 1.25rem 1.5rem;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    cursor: pointer;
+    text-align: left;
+    transition: all var(--transition-base);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    min-height: 60px;
+}
+
+.option-btn:hover {
+    border-color: var(--primary-color);
+    background: var(--surface-hover);
+}
+
+.option-btn.selected {
+    border-color: var(--primary-color);
+    background: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+.option-btn.correct {
+    border-color: var(--success-color);
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.option-btn.incorrect {
+    border-color: var(--danger-color);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.quiz-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-2xl);
+    padding-top: var(--spacing-xl);
+    border-top: 2px solid var(--border);
+}
+
+/* ========================================== 
+   Result Modal
+   ========================================== */
+
+.result-modal-content {
+    max-width: 500px;
+    text-align: center;
+}
+
+.result-header {
+    margin-bottom: var(--spacing-xl);
+}
+
+.result-header .result-icon {
+    font-size: 4rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.result-header h2 {
+    color: var(--primary-color);
+}
+
+.score-display {
+    margin: var(--spacing-2xl) 0;
+}
+
+.score-circle {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.score-circle svg {
+    transform: rotate(-90deg);
+}
+
+.score-bg {
+    fill: none;
+    stroke: var(--border);
+    stroke-width: 8;
+}
+
+.score-progress {
+    fill: none;
+    stroke: var(--success-color);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 283;
+    stroke-dashoffset: 283;
+    transition: stroke-dashoffset 1s ease;
+}
+
+.score-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.score-value {
+    display: block;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: 1;
+}
+
+.score-total {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+}
+
+.result-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg);
+    margin: var(--spacing-xl) 0;
+}
+
+.result-stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.result-stat .stat-icon {
+    font-size: 1.5rem;
+}
+
+.result-stat .stat-text {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* ========================================== 
+   Badge Modal
+   ========================================== */
+
+.badge-modal-content {
+    max-width: 400px;
+    text-align: center;
+}
+
+.modal-close {
+    position: absolute;
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+    background: var(--surface-hover);
+    color: var(--text-primary);
+}
+
+.badge-detail {
+    padding: var(--spacing-lg) 0;
+}
+
+.badge-icon-large {
+    font-size: 5rem;
+    margin-bottom: var(--spacing-lg);
+}
+
+#badgeName {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-md);
+    color: var(--primary-color);
+}
+
+#badgeDescription {
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* ========================================== 
+   Responsive Design
+   ========================================== */
+
+@media (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .achievements-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .welcome-section {
+        padding: var(--spacing-lg);
+    }
+    
+    .welcome-content h1 {
+        font-size: 1.5rem;
+    }
+    
+    .quick-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .achievements-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .subject-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .result-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .quiz-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-container {
+        padding: var(--spacing-md);
+    }
+    
+    .card {
+        padding: var(--spacing-lg);
+    }
+    
+    .achievements-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .score-circle {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .score-value {
+        font-size: 2rem;
+    }
+}

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - EduLens</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+        .profile-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 12px;
+            padding: 2rem;
+            color: white;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .profile-info h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2rem;
+        }
+
+        .profile-info .username {
+            opacity: 0.9;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-badges {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .profile-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .profile-card h2 {
+            margin: 0 0 1.5rem 0;
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .achievement-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            transition: transform 0.2s;
+        }
+
+        .achievement-item:hover {
+            transform: translateX(5px);
+        }
+
+        .achievement-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--biology-color), var(--chemistry-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .achievement-icon.locked {
+            background: #e0e0e0;
+            opacity: 0.6;
+        }
+
+        .achievement-details h3 {
+            margin: 0 0 0.25rem 0;
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .achievement-details p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn-save {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-save:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .activity-timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .activity-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.4rem;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+
+        .timeline-content {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .timeline-content h4 {
+            margin: 0 0 0.25rem 0;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        .timeline-content p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-badges {
+                justify-content: center;
+            }
+
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <a href="dashboard.html" class="back-button">
+            ← Back to Dashboard
+        </a>
+
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-avatar" id="profileAvatar">
+                A
+            </div>
+            <div class="profile-info">
+                <h1 id="profileName">Alex Johnson</h1>
+                <div class="username">@alexjohnson</div>
+                <div class="profile-badges">
+                    <span class="profile-badge">
+                        ⚡ Level <span id="profileLevel">2</span>
+                    </span>
+                    <span class="profile-badge">
+                        🔥 <span id="profileStreak">4</span> Day Streak
+                    </span>
+                    <span class="profile-badge">
+                        🏆 <span id="profileAchievements">2</span> Achievements
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="profile-grid">
+            <!-- Learning Stats -->
+            <div class="profile-card">
+                <h2>📊 Learning Statistics</h2>
+                <div class="stat-item">
+                    <span class="stat-label">Total XP</span>
+                    <span class="stat-value" id="totalXP">120</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Models Viewed</span>
+                    <span class="stat-value" id="modelsViewed">12</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Quizzes Completed</span>
+                    <span class="stat-value" id="quizzesCompleted">5</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Study Time</span>
+                    <span class="stat-value" id="studyTime">3.5h</span>
+                </div>
+            </div>
+
+            <!-- Achievements -->
+            <div class="profile-card">
+                <h2>🏆 Recent Achievements</h2>
+                <div class="achievement-item">
+                    <div class="achievement-icon">🔥</div>
+                    <div class="achievement-details">
+                        <h3>Streak Master</h3>
+                        <p>Maintain a 4-day learning streak</p>
+                    </div>
+                </div>
+                <div class="achievement-item">
+                    <div class="achievement-icon">📚</div>
+                    <div class="achievement-details">
+                        <h3>Knowledge Seeker</h3>
+                        <p>Complete 5 quizzes</p>
+                    </div>
+                </div>
+                <div class="achievement-item">
+                    <div class="achievement-icon locked">🏅</div>
+                    <div class="achievement-details">
+                        <h3>3D Explorer</h3>
+                        <p>View 20 models (12/20)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Info Grid -->
+        <div class="profile-grid">
+            <!-- Recent Activity -->
+            <div class="profile-card">
+                <h2>📅 Recent Activity</h2>
+                <div class="activity-timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <h4>Completed Heart Quiz</h4>
+                            <p>2 hours ago</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <h4>Viewed Brain Model</h4>
+                            <p>5 hours ago</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <h4>Unlocked Achievement</h4>
+                            <p>Yesterday</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <h4>Started Learning Path</h4>
+                            <p>2 days ago</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Settings -->
+            <div class="profile-card">
+                <h2>⚙️ Profile Settings</h2>
+                <form id="profileForm">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" value="Alex Johnson">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" value="alex@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="grade">Grade Level</label>
+                        <select id="grade">
+                            <option>Grade 9</option>
+                            <option selected>Grade 10</option>
+                            <option>Grade 11</option>
+                            <option>Grade 12</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="favoriteSubject">Favorite Subject</label>
+                        <select id="favoriteSubject">
+                            <option selected>Biology</option>
+                            <option>Chemistry</option>
+                            <option>Physics</option>
+                            <option>Math</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-save">💾 Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Load profile data
+        function loadProfileData() {
+            // Get data from localStorage or use demo data
+            const profileData = {
+                name: 'Alex Johnson',
+                username: 'alexjohnson',
+                level: 2,
+                streak: 4,
+                achievements: 2,
+                totalXP: 120,
+                modelsViewed: 12,
+                quizzesCompleted: 5,
+                studyTime: '3.5h'
+            };
+
+            // Update profile header
+            document.getElementById('profileName').textContent = profileData.name;
+            document.getElementById('profileAvatar').textContent = profileData.name.charAt(0);
+            document.getElementById('profileLevel').textContent = profileData.level;
+            document.getElementById('profileStreak').textContent = profileData.streak;
+            document.getElementById('profileAchievements').textContent = profileData.achievements;
+
+            // Update stats
+            document.getElementById('totalXP').textContent = profileData.totalXP;
+            document.getElementById('modelsViewed').textContent = profileData.modelsViewed;
+            document.getElementById('quizzesCompleted').textContent = profileData.quizzesCompleted;
+            document.getElementById('studyTime').textContent = profileData.studyTime;
+        }
+
+        // Handle form submission
+        document.getElementById('profileForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                grade: document.getElementById('grade').value,
+                favoriteSubject: document.getElementById('favoriteSubject').value
+            };
+
+            // Save to localStorage
+            localStorage.setItem('userProfile', JSON.stringify(formData));
+
+            // Show success message
+            const btn = e.target.querySelector('.btn-save');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '✅ Saved!';
+            btn.style.background = '#10b981';
+
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '';
+            }, 2000);
+
+            console.log('Profile updated:', formData);
+        });
+
+        // Load saved profile data
+        const savedProfile = localStorage.getItem('userProfile');
+        if (savedProfile) {
+            const data = JSON.parse(savedProfile);
+            document.getElementById('fullName').value = data.fullName || '';
+            document.getElementById('email').value = data.email || '';
+            document.getElementById('grade').value = data.grade || 'Grade 10';
+            document.getElementById('favoriteSubject').value = data.favoriteSubject || 'Biology';
+        }
+
+        // Initialize profile
+        loadProfileData();
+
+        console.log('✅ Profile page loaded successfully!');
+    </script>
+</body>
+</html>

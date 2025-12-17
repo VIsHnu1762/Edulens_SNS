@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - EduLens</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🔬</span>
+                <span class="logo-text">EduLens</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="profile.html">Profile</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="dashboard-container">
+        <!-- Welcome Header -->
+        <section class="welcome-section">
+            <div class="welcome-content">
+                <h1>Welcome back, <span id="userName">Student</span>! 🎓</h1>
+                <p>Keep learning and exploring the world of science</p>
+            </div>
+            <div class="quick-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="totalXP">0</div>
+                        <div class="stat-label">Total XP</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="totalBadges">0</div>
+                        <div class="stat-label">Badges</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📚</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="modelsViewed">0</div>
+                        <div class="stat-label">Models Viewed</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Grid -->
+        <div class="dashboard-grid">
+            <!-- Left Column -->
+            <div class="left-column">
+                <!-- Streak Widget -->
+                <div class="card streak-card" id="streakCard">
+                    <div class="card-header">
+                        <h3>🔥 Daily Streak</h3>
+                    </div>
+                    <div class="streak-content">
+                        <div class="streak-display">
+                            <div class="streak-number" id="streakNumber">0</div>
+                            <div class="streak-label">Days</div>
+                        </div>
+                        <div class="streak-status" id="streakStatus">
+                            <span class="status-icon" id="statusIcon">⏰</span>
+                            <span class="status-text" id="statusText">Complete today's quiz to maintain streak</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- XP & Level Progress -->
+                <div class="card level-card">
+                    <div class="card-header">
+                        <h3>⚡ Level Progress</h3>
+                    </div>
+                    <div class="level-content">
+                        <div class="level-badge" id="levelBadge">
+                            <div class="badge-circle">
+                                <span id="currentLevel">1</span>
+                            </div>
+                            <div class="badge-label">Level</div>
+                        </div>
+                        <div class="xp-progress">
+                            <div class="xp-info">
+                                <span id="currentXP">0</span> / <span id="requiredXP">100</span> XP
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="xpProgressFill"></div>
+                            </div>
+                            <div class="xp-next">
+                                <span id="xpToNext">100</span> XP to next level
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daily MCQ -->
+                <div class="card mcq-card">
+                    <div class="card-header">
+                        <h3>📝 Daily Quiz Challenge</h3>
+                        <span class="badge badge-new">New</span>
+                    </div>
+                    <div class="mcq-content">
+                        <div class="mcq-info">
+                            <div class="mcq-count">
+                                <span class="count-number" id="mcqCount">5</span>
+                                <span class="count-label">Questions</span>
+                            </div>
+                            <div class="mcq-reward">
+                                <span class="reward-icon">⚡</span>
+                                <span class="reward-text">+<span id="mcqReward">50</span> XP</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-block" id="startQuizBtn">
+                            Start Quiz
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Achievements -->
+                <div class="card achievements-card">
+                    <div class="card-header">
+                        <h3>🏆 Achievements</h3>
+                        <a href="#" class="view-all">View All</a>
+                    </div>
+                    <div class="achievements-grid" id="achievementsGrid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-column">
+                <!-- Quick Start -->
+                <div class="card quick-start-card">
+                    <div class="card-header">
+                        <h3>🚀 Quick Start</h3>
+                    </div>
+                    <div class="quick-start-content">
+                        <button class="quick-btn continue-btn" id="continueBtn">
+                            <span class="btn-icon">▶️</span>
+                            <div class="btn-content">
+                                <div class="btn-title">Continue Learning</div>
+                                <div class="btn-subtitle" id="lastTopic">--</div>
+                            </div>
+                        </button>
+                        <div class="subject-buttons">
+                            <button class="subject-btn biology-btn" data-subject="biology">
+                                <span class="subject-icon">🧬</span>
+                                <span>Biology</span>
+                            </button>
+                            <button class="subject-btn chemistry-btn" data-subject="chemistry">
+                                <span class="subject-icon">⚗️</span>
+                                <span>Chemistry</span>
+                            </button>
+                            <button class="subject-btn physics-btn" data-subject="physics">
+                                <span class="subject-icon">⚛️</span>
+                                <span>Physics</span>
+                            </button>
+                        </div>
+                        <button class="btn btn-success btn-block" id="uploadNewBtn">
+                            📸 Upload Image → Generate 3D
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="card activity-card">
+                    <div class="card-header">
+                        <h3>📊 Recent Activity</h3>
+                    </div>
+                    <div class="activity-feed" id="activityFeed">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Recommendations -->
+                <div class="card recommendations-card">
+                    <div class="card-header">
+                        <h3>💡 Recommended for You</h3>
+                    </div>
+                    <div class="recommendations-list" id="recommendationsList">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- MCQ Modal -->
+    <div class="modal hidden" id="mcqModal">
+        <div class="modal-content mcq-modal-content">
+            <div class="modal-header">
+                <h3>Daily Quiz Challenge</h3>
+                <div class="quiz-progress">
+                    <span id="questionNumber">1</span> / <span id="totalQuestions">5</span>
+                </div>
+            </div>
+            <div class="modal-body mcq-body">
+                <div class="question-card" id="questionCard">
+                    <h4 class="question-text" id="questionText">Loading question...</h4>
+                    <div class="options-container" id="optionsContainer">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+                <div class="quiz-actions">
+                    <button class="btn btn-secondary" id="prevQuestionBtn" disabled>Previous</button>
+                    <button class="btn btn-primary" id="nextQuestionBtn" disabled>Next</button>
+                    <button class="btn btn-success hidden" id="submitQuizBtn">Submit Quiz</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Result Modal -->
+    <div class="modal hidden" id="resultModal">
+        <div class="modal-content result-modal-content">
+            <div class="result-header">
+                <div class="result-icon" id="resultIcon">🎉</div>
+                <h2 id="resultTitle">Great Job!</h2>
+            </div>
+            <div class="result-body">
+                <div class="score-display">
+                    <div class="score-circle">
+                        <svg viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" class="score-bg"/>
+                            <circle cx="50" cy="50" r="45" class="score-progress" id="scoreCircle"/>
+                        </svg>
+                        <div class="score-text">
+                            <span class="score-value" id="scoreValue">0</span>
+                            <span class="score-total">/ <span id="scoreTotal">5</span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="result-stats">
+                    <div class="result-stat">
+                        <span class="stat-icon">⚡</span>
+                        <span class="stat-text">+<span id="earnedXP">0</span> XP</span>
+                    </div>
+                    <div class="result-stat">
+                        <span class="stat-icon">✅</span>
+                        <span class="stat-text"><span id="correctAnswers">0</span> Correct</span>
+                    </div>
+                    <div class="result-stat">
+                        <span class="stat-icon">⏱️</span>
+                        <span class="stat-text"><span id="timeTaken">0</span>s</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-block" id="closeResultBtn">
+                    Continue Learning
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Badge Detail Modal -->
+    <div class="modal hidden" id="badgeModal">
+        <div class="modal-content badge-modal-content">
+            <button class="close-btn modal-close" id="closeBadgeBtn">✕</button>
+            <div class="badge-detail">
+                <div class="badge-icon-large" id="badgeIconLarge">🏆</div>
+                <h3 id="badgeName">Achievement</h3>
+                <p id="badgeDescription">Complete challenges to unlock badges</p>
+                <div class="badge-progress" id="badgeProgressContainer">
+                    <!-- Progress info -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/components/streak.js"></script>
+    <script src="js/components/mcq.js"></script>
+    <script src="js/components/recentActivity.js"></script>
+    <script src="js/components/rewards.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduLens - Test Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            color: #718096;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            background: #f0fdf4;
+            border: 2px solid #86efac;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .status-icon {
+            font-size: 2rem;
+        }
+        
+        .links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .link-card {
+            display: block;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-align: center;
+        }
+        
+        .link-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .link-icon {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .link-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .features {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .features h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+        
+        .features ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        
+        .features li {
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .check {
+            color: #10b981;
+            font-weight: bold;
+        }
+        
+        .info {
+            background: #e0f2fe;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #0ea5e9;
+        }
+        
+        .info strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #0c4a6e;
+        }
+        
+        .footer {
+            text-align: center;
+            color: #718096;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔬 EduLens Frontend</h1>
+        <p class="subtitle">Transform images into interactive 3D educational models</p>
+        
+        <div class="status">
+            <span class="status-icon">✅</span>
+            <div>
+                <strong>Server Running Successfully!</strong>
+                <p style="margin: 0; color: #166534;">All systems operational</p>
+            </div>
+        </div>
+        
+        <div class="links">
+            <a href="index.html" class="link-card">
+                <span class="link-icon">🏠</span>
+                <div class="link-title">Home Page</div>
+                <small>Image Upload</small>
+            </a>
+            
+            <a href="dashboard.html" class="link-card">
+                <span class="link-icon">📊</span>
+                <div class="link-title">Dashboard</div>
+                <small>Student Portal</small>
+            </a>
+            
+            <a href="viewer.html" class="link-card">
+                <span class="link-icon">🎯</span>
+                <div class="link-title">3D Viewer</div>
+                <small>Model Viewer</small>
+            </a>
+            
+            <a href="profile.html" class="link-card">
+                <span class="link-icon">👤</span>
+                <div class="link-title">Profile</div>
+                <small>User Profile</small>
+            </a>
+        </div>
+        
+        <div class="features">
+            <h3>✨ Features Included</h3>
+            <ul>
+                <li><span class="check">✓</span> Image Upload & Classification</li>
+                <li><span class="check">✓</span> Interactive 3D Viewer</li>
+                <li><span class="check">✓</span> Daily Streak Tracker</li>
+                <li><span class="check">✓</span> XP & Level System</li>
+                <li><span class="check">✓</span> Quiz Challenges</li>
+                <li><span class="check">✓</span> Badges & Achievements</li>
+                <li><span class="check">✓</span> Mobile Responsive</li>
+                <li><span class="check">✓</span> Touch Gestures</li>
+            </ul>
+        </div>
+        
+        <div class="info">
+            <strong>📝 Demo Mode Active</strong>
+            <p style="margin: 0;">The app works with demo data out of the box. Connect to your backend for full functionality.</p>
+        </div>
+        
+        <div class="footer">
+            <p><strong>EduLens v1.0.0</strong> | Built with HTML, CSS, JavaScript & Three.js</p>
+            <p style="margin-top: 10px;">Check <a href="README.md" style="color: #667eea;">README.md</a> for documentation</p>
+        </div>
+    </div>
+    
+    <script>
+        // Test if JavaScript is working
+        console.log('✅ EduLens Frontend loaded successfully!');
+        console.log('📍 Current URL:', window.location.href);
+        console.log('🌐 Available pages:');
+        console.log('   - Home: index.html');
+        console.log('   - Dashboard: dashboard.html');
+        console.log('   - 3D Viewer: viewer.html');
+    </script>
+</body>
+</html>
