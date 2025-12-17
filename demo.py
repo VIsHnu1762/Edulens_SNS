@@ -3,10 +3,18 @@ Demo script to showcase the Edulens Intelligence System.
 This demonstrates the complete workflow from image input to 3D model recommendation.
 """
 
-from ml_models.classify import EducationalSubjectClassifier
-from ml_models.content_mapper import ContentMapper
-from ml_models.pipeline import EduLensIntelligence
 import json
+import sys
+
+# Check if dependencies are installed
+try:
+    from ml_models.classify import EducationalSubjectClassifier
+    from ml_models.content_mapper import ContentMapper
+    from ml_models.pipeline import EduLensIntelligence
+    DEPENDENCIES_INSTALLED = True
+except ImportError as e:
+    DEPENDENCIES_INSTALLED = False
+    IMPORT_ERROR = str(e)
 
 
 def demo_classifier():
@@ -15,15 +23,14 @@ def demo_classifier():
     print("DEMO 1: Basic Subject Classification")
     print("="*70)
     
-    # Initialize
-    classifier = EducationalSubjectClassifier()
-    
-    # Example classification (simulated - would use real image)
     print("\nClassifier loaded with 20+ educational subjects:")
     print(f"  Biology: heart, cell, dna, mitochondria, neuron, etc.")
     print(f"  Chemistry: water_molecule, atom, periodic_table, reaction")
     print(f"  Physics: lever, circuit, pulley, motor, em_wave")
     print(f"  Astronomy: solar_system")
+    
+    if not DEPENDENCIES_INSTALLED:
+        print("\n⚠️  Dependencies not installed - showing simulated output")
     
     print("\nExample output for a heart diagram:")
     example_output = {
@@ -43,6 +50,23 @@ def demo_content_mapper():
     print("\n" + "="*70)
     print("DEMO 2: 3D Content Mapping")
     print("="*70)
+    
+    if not DEPENDENCIES_INSTALLED:
+        print("\n⚠️  Dependencies not installed - showing simulated output")
+        print("\nTotal 3D models available: 20")
+        print("\nExample: Heart model metadata")
+        print("  Display Name: Anatomical Heart")
+        print("  Model File: heart.glb")
+        print("  Category: biology")
+        print("  Difficulty: intermediate")
+        print("  Animations: beat, explode, valve_open, valve_close")
+        print("  Description: Detailed 3D model of the human heart showing chambers, valves, and major vessels")
+        print("\nAvailable by category:")
+        print("  Biology: 10 models")
+        print("  Chemistry: 4 models")
+        print("  Physics: 5 models")
+        print("  Astronomy: 1 models")
+        return
     
     mapper = ContentMapper()
     
@@ -73,6 +97,18 @@ def demo_search_features():
     print("\n" + "="*70)
     print("DEMO 3: Search & Filtering Features")
     print("="*70)
+    
+    if not DEPENDENCIES_INSTALLED:
+        print("\n⚠️  Dependencies not installed - showing simulated output")
+        print("\nBeginner-level content:")
+        print("  - cell: Human Cell")
+        print("  - water_molecule: Water Molecule (H₂O)")
+        print("  - lever: Lever Mechanism")
+        print("\nContent tagged with 'anatomy':")
+        print("  - heart: Anatomical Heart")
+        print("  - skeleton: Human Skeletal System")
+        print("  - circulation: Blood Circulation System")
+        return
     
     mapper = ContentMapper()
     
@@ -143,7 +179,17 @@ def main():
     print("🎓 EDULENS INTELLIGENCE SYSTEM - INTERACTIVE DEMO")
     print("="*70)
     print("\nThis demo showcases the AI/ML capabilities for educational content.")
-    print("Note: Image processing requires actual image files.")
+    
+    if not DEPENDENCIES_INSTALLED:
+        print("\n⚠️  NOTE: Dependencies not yet installed")
+        print(f"   Error: {IMPORT_ERROR}")
+        print("\nTo install dependencies, run:")
+        print("  python3 -m venv venv")
+        print("  source venv/bin/activate")
+        print("  pip install -r requirements.txt")
+        print("\nShowing simulated demo output below...")
+    else:
+        print("Note: Image processing requires actual image files.")
     
     try:
         # Run demos
@@ -157,9 +203,15 @@ def main():
         print("✅ DEMO COMPLETE")
         print("="*70)
         
-        print("\nTo use with real images:")
-        print("  python ml_models/classify.py <image_path>")
-        print("  python ml_models/pipeline.py <image_path>")
+        if DEPENDENCIES_INSTALLED:
+            print("\nTo use with real images:")
+            print("  python3 ml_models/classify.py <image_path>")
+            print("  python3 ml_models/pipeline.py <image_path>")
+        else:
+            print("\nNext steps:")
+            print("  1. Install dependencies (see above)")
+            print("  2. Run demo again: python3 demo.py")
+            print("  3. Test with images: python3 ml_models/classify.py <image_path>")
         
         print("\nFor more information:")
         print("  📖 ML_README.md - Complete usage guide")
@@ -168,7 +220,9 @@ def main():
         
     except Exception as e:
         print(f"\n❌ Demo error: {e}")
-        print("Note: Full functionality requires installing dependencies:")
+        import traceback
+        traceback.print_exc()
+        print("\nNote: Full functionality requires installing dependencies:")
         print("  pip install -r requirements.txt")
 
 
