@@ -1,4 +1,23 @@
 from pydantic import BaseModel
+from typing import Optional, List, Dict, Any
+
+
+class ModelMetadata(BaseModel):
+    """Metadata for 3D model"""
+    display_name: Optional[str] = None
+    category: Optional[str] = None
+    subcategory: Optional[str] = None
+    difficulty: Optional[str] = None
+    description: Optional[str] = None
+    tags: Optional[List[str]] = None
+    animations: Optional[List[str]] = None
+    interactive_features: Optional[List[str]] = None
+
+
+class AlternativePrediction(BaseModel):
+    """Alternative prediction with confidence"""
+    subject: str
+    confidence: float
 
 
 class PredictionResponse(BaseModel):
@@ -6,6 +25,9 @@ class PredictionResponse(BaseModel):
     predicted_subject: str
     confidence: float
     model_path: str
+    metadata: Optional[ModelMetadata] = None
+    alternatives: Optional[List[AlternativePrediction]] = None
+    related_models: Optional[List[str]] = None
 
 
 class HealthResponse(BaseModel):

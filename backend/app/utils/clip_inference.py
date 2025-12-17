@@ -1,62 +1,29 @@
-import torch
+import sys
+from pathlib import Path
+from typing import Tuple, Dict
 from PIL import Image
-from transformers import CLIPProcessor, CLIPModel
-from typing import Tuple
-import numpy as np
+
+# Add ml_models to path
+ML_MODELS_PATH = Path(__file__).parent.parent.parent.parent / "ml_models"
+sys.path.insert(0, str(ML_MODELS_PATH))
+
+from classify import EducationalSubjectClassifier
 
 
 class CLIPClassifier:
     """
     CLIP-based image classifier for educational subjects.
-    Preloads model at initialization and provides classification methods.
+    Uses the enhanced ml_models classifier with extended subject taxonomy.
     """
     
-    def __init__(self, model_name: str = "openai/clip-vit-base-patch32"):
-        """
-        Initialize CLIP model and processor.
+    def __init__(self):
+        """Initialize the educational subject classifier."""
+        print("Initializing educational subject classifier...")
+        self.classifier = EducationalSubjectClassifier()
         
-        Args:
-            model_name: HuggingFace model identifier
-        """
-        print(f"Loading CLIP model: {model_name}...")
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        self.model = CLIPModel.from_pretrained(model_name).to(self.device)
-        self.processor = CLIPProcessor.from_pretrained(model_name)
-        
-        # Predefined text labels for classification
-        self.labels = [
-            "heart",
-            "dna",
-            "cell",
-            "atom",
-            "lever",
-            "pendulum",
-            "ac circuit"
-        ]
-        
-        # Precompute text embeddings for efficiency
-        self.text_embeddings = self._precompute_text_embeddings()
-        print(f"CLIP model loaded successfully on {self.device}")
-    
-    def _precompute_text_embeddings(self) -> torch.Tensor:
-        """
-        Precompute text embeddings for all labels.
-        
-        Returns:
-            Tensor of normalized text embeddings
-        """
-        with torch.no_grad():
-            text_inputs = self.processor(
-                text=self.labels,
-                return_tensors="pt",
-                padding=True
-            ).to(self.device)
-            
-            text_features = self.model.get_text_features(**text_inputs)
-            # Normalize embeddings
-            text_features = text_features / text_features.norm(dim=-1, keepdim=True)
-            
-        return text_features
+        # Get available labels from classifier
+        self.labels = list(self.classifier.LABEL_TO_SUBJECT.values())
+        print(f"Classifier ready with {len(self.labels)} subjects")
     
     def classify_image(self, image: Image.Image) -> Tuple[str, float]:
         """
@@ -72,31 +39,55 @@ class CLIPClassifier:
         if image.mode != "RGB":
             image = image.convert("RGB")
         
-        # Preprocess image
-        with torch.no_grad():
-            image_inputs = self.processor(
-                images=image,
-                return_tensors="pt"
-            ).to(self.device)
-            
-            # Get image embeddings
-            image_features = self.model.get_image_features(**image_inputs)
-            # Normalize embeddings
-            image_features = image_features / image_features.norm(dim=-1, keepdim=True)
-            
-            # Compute cosine similarity with text embeddings
-            similarities = (image_features @ self.text_embeddings.T).squeeze(0)
-            
-            # Apply softmax to get probabilities
-            probs = torch.nn.functional.softmax(similarities, dim=0)
-            
-            # Get the highest confidence prediction
-            confidence, predicted_idx = torch.max(probs, dim=0)
-            
-        predicted_label = self.labels[predicted_idx.item()]
-        confidence_score = confidence.item()
+        # Save temporary image for classification
+        import tempfile
+        with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as tmp:
+            image.save(tmp.name)
+            tmp_path = tmp.name
         
-        return predicted_label, confidence_score
+        try:
+            # Classify using ml_models classifier
+            result = self.classifier.classify_image(tmp_path, top_k=1)
+            predicted_subject = result['predicted_subject']
+            confidence = result['confidence']
+            
+            return predicted_subject, confidence
+        finally:
+            # Clean up temp file
+            import os
+            if os.path.exists(tmp_path):
+                os.remove(tmp_path)
+    
+    def classify_image_detailed(self, image: Image.Image, top_k: int = 3) -> Dict:
+        """
+        Classify an image and return detailed results with top predictions.
+        
+        Args:
+            image: PIL Image object
+            top_k: Number of top predictions to return
+            
+        Returns:
+            Dictionary with predicted_subject, confidence, and top_predictions
+        """
+        # Ensure image is in RGB mode
+        if image.mode != "RGB":
+            image = image.convert("RGB")
+        
+        # Save temporary image for classification
+        import tempfile
+        with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as tmp:
+            image.save(tmp.name)
+            tmp_path = tmp.name
+        
+        try:
+            # Classify using ml_models classifier
+            result = self.classifier.classify_image(tmp_path, top_k=top_k)
+            return result
+        finally:
+            # Clean up temp file
+            import os
+            if os.path.exists(tmp_path):
+                os.remove(tmp_path)
 
 
 # Global classifier instance (initialized at startup)
