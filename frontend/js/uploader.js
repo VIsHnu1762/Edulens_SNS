@@ -1,6 +1,6 @@
 /**
  * EduLens - Image Uploader
- * Handles image upload, preview, and backend communication
+ * Handles image upload, preview, camera capture, and backend communication
  */
 
 class ImageUploader {
@@ -9,9 +9,13 @@ class ImageUploader {
         this.initEventListeners();
         this.uploadedFile = null;
         this.resultData = null;
+        this.stream = null;
+        this.canvas = null;
+        this.ctx = null;
     }
 
     initElements() {
+        // File upload elements
         this.uploadArea = document.getElementById('uploadArea');
         this.previewArea = document.getElementById('previewArea');
         this.resultCard = document.getElementById('resultCard');
@@ -25,14 +29,30 @@ class ImageUploader {
         this.confidenceFill = document.getElementById('confidenceFill');
         this.confidenceValue = document.getElementById('confidenceValue');
         this.uploadSpinner = document.getElementById('uploadSpinner');
+        
+        // Camera elements
+        this.cameraPlaceholder = document.getElementById('cameraPlaceholder');
+        this.cameraView = document.getElementById('cameraView');
+        this.cameraPreview = document.getElementById('cameraPreview');
+        this.startCameraBtn = document.getElementById('startCameraBtn');
+        this.stopCameraBtn = document.getElementById('stopCameraBtn');
+        this.captureBtn = document.getElementById('captureBtn');
+        this.retakeBtn = document.getElementById('retakeBtn');
+        this.useCameraPhotoBtn = document.getElementById('useCameraPhotoBtn');
+        this.cameraVideo = document.getElementById('cameraVideo');
+        this.cameraCanvas = document.getElementById('cameraCanvas');
+        this.cameraSpinner = document.getElementById('cameraSpinner');
     }
 
     initEventListeners() {
-        // Click to select image
+        // File upload listeners
         this.selectBtn.addEventListener('click', () => this.imageInput.click());
-        this.uploadArea.addEventListener('click', () => this.imageInput.click());
+        this.uploadArea.addEventListener('click', (e) => {
+            if (e.target === this.uploadArea || e.target.closest('.upload-area')) {
+                this.imageInput.click();
+            }
+        });
         
-        // File input change
         this.imageInput.addEventListener('change', (e) => this.handleFileSelect(e));
         
         // Drag and drop
@@ -40,14 +60,16 @@ class ImageUploader {
         this.uploadArea.addEventListener('dragleave', (e) => this.handleDragLeave(e));
         this.uploadArea.addEventListener('drop', (e) => this.handleDrop(e));
         
-        // Change image
         this.changeImageBtn.addEventListener('click', () => this.resetUpload());
-        
-        // Upload and analyze
         this.uploadBtn.addEventListener('click', () => this.uploadImage());
-        
-        // View 3D model
         this.view3DBtn.addEventListener('click', () => this.open3DViewer());
+        
+        // Camera listeners
+        this.startCameraBtn.addEventListener('click', () => this.startCamera());
+        this.stopCameraBtn.addEventListener('click', () => this.stopCamera());
+        this.captureBtn.addEventListener('click', () => this.capturePhoto());
+        this.retakeBtn.addEventListener('click', () => this.retakePhoto());
+        this.useCameraPhotoBtn.addEventListener('click', () => this.uploadCameraPhoto());
     }
 
     handleDragOver(e) {
@@ -242,6 +264,125 @@ class ImageUploader {
             if (API_CONFIG.DEMO_MODE) {
                 console.log(`Demo mode: Logged activity - ${type} for ${subject}`);
             }
+        }
+    }
+
+    // ========================================
+    // Camera Methods
+    // ========================================
+
+    async startCamera() {
+        try {
+            // Request camera access
+            this.stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { 
+                    facingMode: 'environment', // Use back camera on mobile
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                } 
+            });
+
+            // Set video source
+            this.cameraVideo.srcObject = this.stream;
+            
+            // Show camera view
+            this.cameraPlaceholder.classList.add('hidden');
+            this.cameraView.classList.remove('hidden');
+            
+            console.log('Camera started successfully');
+        } catch (error) {
+            console.error('Error accessing camera:', error);
+            alert('Unable to access camera. Please make sure you have granted camera permissions.');
+        }
+    }
+
+    stopCamera() {
+        if (this.stream) {
+            this.stream.getTracks().forEach(track => track.stop());
+            this.stream = null;
+        }
+        
+        this.cameraVideo.srcObject = null;
+        this.cameraView.classList.add('hidden');
+        this.cameraPlaceholder.classList.remove('hidden');
+        this.cameraPreview.classList.add('hidden');
+    }
+
+    capturePhoto() {
+        // Initialize canvas if not already done
+        if (!this.canvas) {
+            this.canvas = this.cameraCanvas;
+            this.ctx = this.canvas.getContext('2d');
+        }
+
+        // Set canvas dimensions to match video
+        const video = this.cameraVideo;
+        this.canvas.width = video.videoWidth;
+        this.canvas.height = video.videoHeight;
+
+        // Draw current video frame to canvas
+        this.ctx.drawImage(video, 0, 0, this.canvas.width, this.canvas.height);
+
+        // Stop camera stream
+        if (this.stream) {
+            this.stream.getTracks().forEach(track => track.stop());
+        }
+
+        // Show preview
+        this.cameraView.classList.add('hidden');
+        this.cameraPreview.classList.remove('hidden');
+        this.resultCard.classList.add('hidden');
+
+        console.log('Photo captured');
+    }
+
+    retakePhoto() {
+        this.cameraPreview.classList.add('hidden');
+        this.startCamera(); // Restart camera
+    }
+
+    async uploadCameraPhoto() {
+        // Show loading state
+        this.useCameraPhotoBtn.disabled = true;
+        this.cameraSpinner.classList.remove('hidden');
+        this.useCameraPhotoBtn.querySelector('.btn-text').textContent = 'Analyzing...';
+
+        try {
+            // Convert canvas to blob
+            const blob = await new Promise(resolve => {
+                this.canvas.toBlob(resolve, 'image/jpeg', 0.95);
+            });
+
+            // Create file from blob
+            const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
+            this.uploadedFile = file;
+
+            // Create FormData
+            const formData = new FormData();
+            formData.append('image', file);
+
+            // Upload to backend
+            const response = await fetch('/upload-image', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error(`Upload failed: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            this.resultData = data;
+            this.showResult(data);
+
+        } catch (error) {
+            console.error('Upload error:', error);
+            alert('Failed to upload image. Please try again.');
+        } finally {
+            // Reset loading state
+            this.useCameraPhotoBtn.disabled = false;
+            this.cameraSpinner.classList.add('hidden');
+            this.useCameraPhotoBtn.querySelector('.btn-text').textContent = 'Analyze & Generate 3D';
         }
     }
 }

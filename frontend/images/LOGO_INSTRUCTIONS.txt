@@ -1,0 +1,18 @@
+LOGO SETUP INSTRUCTIONS
+========================
+
+Please save the AR EduLens logo image as:
+frontend/images/logo.png
+
+The logo should be:
+- Named exactly: logo.png
+- In PNG format for transparency support
+- Recommended size: 200x50px or similar aspect ratio
+- The blue hexagonal AR logo with "EduLens" text
+
+Once saved, the logo will automatically appear in:
+- Navigation header (index.html)
+- Dashboard header (dashboard.html) 
+- 3D Viewer header (viewer.html)
+
+The CSS styling is already configured for optimal display.

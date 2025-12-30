@@ -28,22 +28,62 @@
         </section>
 
         <section class="upload-section">
-            <div class="upload-card">
-                <div class="upload-area" id="uploadArea">
-                    <div class="upload-icon">📸</div>
-                    <h3>Upload Your Image</h3>
-                    <p>Drop an image here or click to browse</p>
-                    <input type="file" id="imageInput" accept="image/*" hidden>
-                    <button class="btn btn-primary" id="selectBtn">Select Image</button>
+            <div class="upload-container">
+                <!-- Upload from File -->
+                <div class="upload-card">
+                    <div class="card-header">
+                        <h3>📁 Upload Image</h3>
+                    </div>
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">📸</div>
+                        <h4>Upload Your Image</h4>
+                        <p>Drop an image here or click to browse</p>
+                        <input type="file" id="imageInput" accept="image/*" hidden>
+                        <button class="btn btn-primary" id="selectBtn">Select Image</button>
+                    </div>
+
+                    <div class="preview-area hidden" id="previewArea">
+                        <img id="imagePreview" alt="Preview">
+                        <button class="btn btn-secondary" id="changeImageBtn">Change Image</button>
+                        <button class="btn btn-primary btn-large" id="uploadBtn">
+                            <span class="btn-text">Analyze & Generate 3D</span>
+                            <span class="spinner hidden" id="uploadSpinner"></span>
+                        </button>
+                    </div>
                 </div>
 
-                <div class="preview-area hidden" id="previewArea">
-                    <img id="imagePreview" alt="Preview">
-                    <button class="btn btn-secondary" id="changeImageBtn">Change Image</button>
-                    <button class="btn btn-primary btn-large" id="uploadBtn">
-                        <span class="btn-text">Analyze & Generate 3D</span>
-                        <span class="spinner hidden" id="uploadSpinner"></span>
-                    </button>
+                <!-- Camera Capture -->
+                <div class="upload-card">
+                    <div class="card-header">
+                        <h3>📷 Use Camera</h3>
+                    </div>
+                    <div class="camera-area" id="cameraArea">
+                        <div class="camera-placeholder" id="cameraPlaceholder">
+                            <div class="camera-icon">📹</div>
+                            <h4>Capture with Camera</h4>
+                            <p>Take a photo directly from your device camera</p>
+                            <button class="btn btn-primary" id="startCameraBtn">Start Camera</button>
+                        </div>
+                        
+                        <div class="camera-view hidden" id="cameraView">
+                            <video id="cameraVideo" autoplay playsinline></video>
+                            <div class="camera-controls">
+                                <button class="btn btn-success" id="captureBtn">📸 Capture Photo</button>
+                                <button class="btn btn-secondary" id="stopCameraBtn">Stop Camera</button>
+                            </div>
+                        </div>
+
+                        <div class="camera-preview hidden" id="cameraPreview">
+                            <canvas id="cameraCanvas"></canvas>
+                            <div class="camera-actions">
+                                <button class="btn btn-secondary" id="retakeBtn">↻ Retake</button>
+                                <button class="btn btn-primary btn-large" id="useCameraPhotoBtn">
+                                    <span class="btn-text">Analyze & Generate 3D</span>
+                                    <span class="spinner hidden" id="cameraSpinner"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
