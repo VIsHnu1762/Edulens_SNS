@@ -1,7 +1,12 @@
-# Netlify Settings
+# Netlify Settings for Static Frontend
 [build]
   publish = "frontend"
-  command = "echo 'No build required for static site'"
+  command = "echo 'Static frontend deployment - no build required'"
+
+# Environment settings
+[build.environment]
+  NODE_VERSION = "18"
+  PYTHON_VERSION = "3.9"
 
 # Headers for security and performance
 [[headers]]
