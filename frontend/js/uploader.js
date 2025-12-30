@@ -133,7 +133,7 @@ class ImageUploader {
             formData.append('image', this.uploadedFile);
 
             // Upload to backend
-            const response = await fetch('/upload-image', {
+            const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.ENDPOINTS.UPLOAD_IMAGE, {
                 method: 'POST',
                 body: formData
             });
@@ -148,13 +148,37 @@ class ImageUploader {
 
         } catch (error) {
             console.error('Upload error:', error);
-            alert('Failed to upload image. Please try again.');
             
-            // Reset loading state
-            this.uploadBtn.disabled = false;
-            this.uploadSpinner.classList.add('hidden');
-            document.querySelector('.btn-text').textContent = 'Analyze & Generate 3D';
+            // Demo mode fallback
+            if (API_CONFIG.DEMO_MODE) {
+                console.log('Using demo mode for image classification');
+                this.resultData = this.getDemoClassificationResult();
+                this.showResult(this.resultData);
+            } else {
+                alert('Failed to upload image. Please try again.');
+                
+                // Reset loading state
+                this.uploadBtn.disabled = false;
+                this.uploadSpinner.classList.add('hidden');
+                document.querySelector('.btn-text').textContent = 'Analyze & Generate 3D';
+            }
         }
+    }
+
+    getDemoClassificationResult() {
+        // Demo classification results based on common educational subjects
+        const demoResults = [
+            { predicted_subject: 'heart', confidence: 94, model_path: '/static/models/heart.glb' },
+            { predicted_subject: 'cell', confidence: 89, model_path: '/static/models/cell.glb' },
+            { predicted_subject: 'dna', confidence: 92, model_path: '/static/models/dna.glb' },
+            { predicted_subject: 'atom', confidence: 87, model_path: '/static/models/atom.glb' },
+            { predicted_subject: 'brain', confidence: 91, model_path: '/static/models/brain.glb' },
+            { predicted_subject: 'lung', confidence: 88, model_path: '/static/models/lung.glb' }
+        ];
+        
+        // Return random demo result
+        const randomIndex = Math.floor(Math.random() * demoResults.length);
+        return demoResults[randomIndex];
     }
 
     showResult(data) {
@@ -202,7 +226,7 @@ class ImageUploader {
 
     async logActivity(type, subject) {
         try {
-            await fetch('/user/activity/log', {
+            await fetch(API_CONFIG.BASE_URL + API_CONFIG.ENDPOINTS.ACTIVITY_LOG, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -215,6 +239,9 @@ class ImageUploader {
             });
         } catch (error) {
             console.error('Failed to log activity:', error);
+            if (API_CONFIG.DEMO_MODE) {
+                console.log(`Demo mode: Logged activity - ${type} for ${subject}`);
+            }
         }
     }
 }

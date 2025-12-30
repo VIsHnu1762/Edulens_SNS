@@ -49,7 +49,7 @@ class DashboardManager {
             this.showLoadingState();
 
             // Fetch dashboard data from backend
-            const response = await fetch('/user/dashboard');
+            const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.ENDPOINTS.DASHBOARD);
             
             if (!response.ok) {
                 throw new Error('Failed to fetch dashboard data');
