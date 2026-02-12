@@ -32,7 +32,7 @@ class StarredService:
                 subjects = metadata.get('subjects', {})
                 return subjects.get(subject, {})
         except Exception as e:
-            print(f"Error loading metadata: {e}")
+            print(f"Error loading metadata from {self.metadata_path}: {e}")
             return {}
     
     def get_starred_items(self, user_id: str = "default") -> List[Dict]:
@@ -45,7 +45,7 @@ class StarredService:
             
             return data[user_id].get("starred_models", [])
         except Exception as e:
-            print(f"Error getting starred items: {e}")
+            print(f"Error getting starred items for user {user_id}: {e}")
             return []
     
     def star_model(self, user_id: str, subject: str) -> Dict:
@@ -90,7 +90,7 @@ class StarredService:
             }
             
         except Exception as e:
-            print(f"Error starring model: {e}")
+            print(f"Error starring model {subject} for user {user_id}: {e}")
             return {
                 "success": False,
                 "message": f"Failed to star model: {str(e)}",
@@ -135,7 +135,7 @@ class StarredService:
             }
             
         except Exception as e:
-            print(f"Error unstarring model: {e}")
+            print(f"Error unstarring model {subject} for user {user_id}: {e}")
             return {
                 "success": False,
                 "message": f"Failed to unstar model: {str(e)}",
