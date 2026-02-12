@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 from app.schemas.mcq import MCQQuestion
 from app.schemas.activity import ActivityLog
+from app.schemas.starred import StarredItem
 
 
 class XPData(BaseModel):
@@ -41,3 +42,4 @@ class DashboardResponse(BaseModel):
     recommended_topics: List[str]
     last_viewed_model: Optional[str] = None
     activity_stats: dict
+    starred_models: List[StarredItem]
