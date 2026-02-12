@@ -1,5 +1,8 @@
 {
   "default": {
     "starred_models": []
+  },
+  "test_user": {
+    "starred_models": []
   }
 }

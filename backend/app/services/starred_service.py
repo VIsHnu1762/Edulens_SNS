@@ -3,7 +3,7 @@ Service for managing starred/favorite models
 """
 from typing import List, Dict
 from datetime import datetime
-from app.utils.storage import read_json, write_json
+from app.utils.storage import get_storage
 import json
 import os
 
@@ -13,12 +13,7 @@ class StarredService:
     
     def __init__(self, data_file: str = "starred.json"):
         self.data_file = data_file
-        self.data_path = os.path.join(
-            os.path.dirname(__file__), 
-            "..", 
-            "data", 
-            self.data_file
-        )
+        self.storage = get_storage()
         # Load model metadata for display names
         self.metadata_path = os.path.join(
             os.path.dirname(__file__),
@@ -43,10 +38,10 @@ class StarredService:
     def get_starred_items(self, user_id: str = "default") -> List[Dict]:
         """Get all starred items for a user"""
         try:
-            data = read_json(self.data_path)
+            data = self.storage.read(self.data_file, default={})
             if user_id not in data:
                 data[user_id] = {"starred_models": []}
-                write_json(self.data_path, data)
+                self.storage.write(self.data_file, data)
             
             return data[user_id].get("starred_models", [])
         except Exception as e:
@@ -56,7 +51,7 @@ class StarredService:
     def star_model(self, user_id: str, subject: str) -> Dict:
         """Add a model to starred list"""
         try:
-            data = read_json(self.data_path)
+            data = self.storage.read(self.data_file, default={})
             
             # Initialize user data if not exists
             if user_id not in data:
@@ -86,7 +81,7 @@ class StarredService:
             starred_list.append(starred_item)
             data[user_id]["starred_models"] = starred_list
             
-            write_json(self.data_path, data)
+            self.storage.write(self.data_file, data)
             
             return {
                 "success": True,
@@ -105,7 +100,7 @@ class StarredService:
     def unstar_model(self, user_id: str, subject: str) -> Dict:
         """Remove a model from starred list"""
         try:
-            data = read_json(self.data_path)
+            data = self.storage.read(self.data_file, default={})
             
             if user_id not in data:
                 return {
@@ -131,7 +126,7 @@ class StarredService:
                 }
             
             data[user_id]["starred_models"] = starred_list
-            write_json(self.data_path, data)
+            self.storage.write(self.data_file, data)
             
             return {
                 "success": True,

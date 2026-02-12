@@ -55,3 +55,8 @@ htmlcov/
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Test files
+test_starred.py
+test_starred_api.py
+
