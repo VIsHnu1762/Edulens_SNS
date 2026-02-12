@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 import os
 
-from app.routes import health, upload, dashboard, streak, mcq, activity
+from app.routes import health, upload, dashboard, streak, mcq, activity, starred
 from app.utils.clip_inference import initialize_classifier
 
 
@@ -61,6 +61,7 @@ app.include_router(dashboard.router, tags=["Dashboard"])
 app.include_router(streak.router, tags=["Streak"])
 app.include_router(mcq.router, tags=["MCQ"])
 app.include_router(activity.router, tags=["Activity"])
+app.include_router(starred.router, tags=["Starred"])
 
 
 @app.get("/")
@@ -76,7 +77,8 @@ async def root():
             "XP and leveling system",
             "MCQ questions",
             "Activity logging",
-            "Topic recommendations"
+            "Topic recommendations",
+            "Starred/favorite models"
         ],
         "docs": "/docs",
         "health": "/health",

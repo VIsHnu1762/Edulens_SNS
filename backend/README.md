@@ -6,6 +6,8 @@ A lightweight FastAPI backend that uses OpenAI's CLIP model to classify 2D image
 
 - **AI-Powered Classification**: Uses CLIP (Contrastive Language-Image Pre-training) for zero-shot image classification
 - **7 Educational Subjects**: heart, dna, cell, atom, lever, pendulum, ac circuit
+- **Student Dashboard**: Gamification features including streaks, XP, leveling, and MCQ questions
+- **Starred/Favorite Models**: Bookmark favorite models for quick access (see [STARRED_FEATURE.md](STARRED_FEATURE.md))
 - **RESTful API**: Clean FastAPI implementation with automatic OpenAPI documentation
 - **Static 3D Model Serving**: Serves GLB files for frontend consumption
 - **CORS Enabled**: Ready for Vercel frontend integration

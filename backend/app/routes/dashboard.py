@@ -9,6 +9,7 @@ from app.services.xp_service import get_xp_service
 from app.services.mcq_service import get_mcq_service
 from app.services.activity_service import get_activity_service
 from app.services.recommendation_service import get_recommendation_service
+from app.services.starred_service import get_starred_service
 
 router = APIRouter()
 
@@ -40,6 +41,7 @@ async def get_dashboard(user_id: str = "default"):
         mcq_service = get_mcq_service()
         activity_service = get_activity_service()
         recommendation_service = get_recommendation_service()
+        starred_service = get_starred_service()
         
         # Gather all data
         streak_data = streak_service.get_streak(user_id)
@@ -48,6 +50,7 @@ async def get_dashboard(user_id: str = "default"):
         recent_activities = activity_service.get_recent_activities(user_id, limit=10)
         activity_stats = activity_service.get_activity_stats(user_id)
         recommendations = recommendation_service.get_recommendations(user_id=user_id)
+        starred_items = starred_service.get_starred_items(user_id)
         
         # Get last viewed model
         last_viewed_model = None
@@ -79,7 +82,8 @@ async def get_dashboard(user_id: str = "default"):
             "recent_activity": recent_activities,
             "recommended_topics": recommendations,
             "last_viewed_model": last_viewed_model,
-            "activity_stats": activity_stats
+            "activity_stats": activity_stats,
+            "starred_models": starred_items
         }
         
     except Exception as e:
