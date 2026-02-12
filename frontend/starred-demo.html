@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starred Models Demo - EduLens</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .card h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .models-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .model-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .model-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .model-card.starred {
+            border-color: #ffd700;
+            background: #fffef0;
+        }
+
+        .model-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .model-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .model-category {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .star-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .star-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .starred-list {
+            list-style: none;
+        }
+
+        .starred-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .starred-item:last-child {
+            border-bottom: none;
+        }
+
+        .starred-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .remove-btn {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85em;
+        }
+
+        .remove-btn:hover {
+            background: #cc0000;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .badge.biology { background: #e8f5e9; color: #2e7d32; }
+        .badge.chemistry { background: #fff3e0; color: #e65100; }
+        .badge.physics { background: #e3f2fd; color: #1565c0; }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⭐ Starred Models Feature</h1>
+            <p>Bookmark your favorite educational 3D models</p>
+        </div>
+
+        <div class="content">
+            <!-- Available Models -->
+            <div class="card">
+                <h2>📚 Available Models</h2>
+                <div class="models-grid" id="models-grid">
+                    <!-- Models will be dynamically added here -->
+                </div>
+            </div>
+
+            <!-- Starred Models -->
+            <div class="card">
+                <h2>⭐ My Starred Models <span id="starred-count" style="font-size: 0.8em; color: #667eea;">(0)</span></h2>
+                <div id="starred-list">
+                    <div class="empty-state">
+                        <p>No starred models yet</p>
+                        <p style="font-size: 0.9em; margin-top: 10px;">Click the ⭐ button on any model to add it to your favorites!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample models data
+        const models = [
+            { subject: 'heart', name: 'Anatomical Heart', icon: '❤️', category: 'biology' },
+            { subject: 'cell', name: 'Human Cell', icon: '🧬', category: 'biology' },
+            { subject: 'dna', name: 'DNA Structure', icon: '🧬', category: 'biology' },
+            { subject: 'neuron', name: 'Neuron', icon: '🧠', category: 'biology' },
+            { subject: 'atom', name: 'Atom Model', icon: '⚛️', category: 'chemistry' },
+            { subject: 'water_molecule', name: 'Water Molecule', icon: '💧', category: 'chemistry' },
+            { subject: 'circuit', name: 'Circuit', icon: '⚡', category: 'physics' },
+            { subject: 'lever', name: 'Lever', icon: '🔧', category: 'physics' },
+            { subject: 'solar_system', name: 'Solar System', icon: '🌍', category: 'astronomy' },
+        ];
+
+        // Starred models storage (in real app, this would be in backend)
+        let starredModels = [];
+
+        // Initialize the UI
+        function init() {
+            renderModels();
+            renderStarredList();
+        }
+
+        // Render available models
+        function renderModels() {
+            const grid = document.getElementById('models-grid');
+            grid.innerHTML = models.map(model => `
+                <div class="model-card ${isStarred(model.subject) ? 'starred' : ''}" id="model-${model.subject}">
+                    <div class="star-btn" onclick="toggleStar('${model.subject}', event)">
+                        ${isStarred(model.subject) ? '⭐' : '☆'}
+                    </div>
+                    <div class="model-icon">${model.icon}</div>
+                    <div class="model-name">${model.name}</div>
+                    <div class="model-category">
+                        <span class="badge ${model.category}">${model.category}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render starred list
+        function renderStarredList() {
+            const listContainer = document.getElementById('starred-list');
+            const count = document.getElementById('starred-count');
+            
+            count.textContent = `(${starredModels.length})`;
+
+            if (starredModels.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="empty-state">
+                        <p>No starred models yet</p>
+                        <p style="font-size: 0.9em; margin-top: 10px;">Click the ⭐ button on any model to add it to your favorites!</p>
+                    </div>
+                `;
+            } else {
+                listContainer.innerHTML = `
+                    <ul class="starred-list">
+                        ${starredModels.map(model => `
+                            <li class="starred-item">
+                                <div class="starred-info">
+                                    <span style="font-size: 1.5em;">${model.icon}</span>
+                                    <div>
+                                        <div style="font-weight: 600;">${model.name}</div>
+                                        <div style="font-size: 0.85em; color: #666;">${model.category}</div>
+                                    </div>
+                                </div>
+                                <button class="remove-btn" onclick="toggleStar('${model.subject}', event)">Remove</button>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+            }
+        }
+
+        // Check if model is starred
+        function isStarred(subject) {
+            return starredModels.some(m => m.subject === subject);
+        }
+
+        // Toggle star status
+        function toggleStar(subject, event) {
+            event.stopPropagation();
+            
+            const model = models.find(m => m.subject === subject);
+            if (!model) return;
+
+            if (isStarred(subject)) {
+                // Unstar
+                starredModels = starredModels.filter(m => m.subject !== subject);
+                console.log(`✓ Unstarred: ${model.name}`);
+            } else {
+                // Star
+                starredModels.push(model);
+                console.log(`✓ Starred: ${model.name}`);
+            }
+
+            // Update UI
+            renderModels();
+            renderStarredList();
+
+            // In real app, this would make API calls:
+            // POST /user/starred/{subject} or DELETE /user/starred/{subject}
+        }
+
+        // Initialize on page load
+        init();
+
+        // Log API endpoints for reference
+        console.log('📡 API Endpoints:');
+        console.log('  GET    /user/starred           - Get all starred models');
+        console.log('  POST   /user/starred/{subject} - Star a model');
+        console.log('  DELETE /user/starred/{subject} - Unstar a model');
+        console.log('  GET    /user/starred/check/{subject} - Check if starred');
+        console.log('\n✨ Try clicking the stars to see the feature in action!');
+    </script>
+</body>
+</html>
